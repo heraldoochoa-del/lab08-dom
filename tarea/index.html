@@ -2,33 +2,41 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registro de Notas - Tarea Lab08</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista de tareas de estudio</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; max-width: 600px; }
-    .error { color: red; font-weight: bold; margin-top: 5px; }
+    body { font-family: system-ui, sans-serif; max-width: 520px; margin: 2rem auto; padding: 0 1rem; }
+    form { display: flex; gap: .5rem; flex-wrap: wrap; }
+    input[type="text"] { flex: 1; min-width: 160px; padding: .4rem; }
+    button { cursor: pointer; padding: .4rem .7rem; }
+    #mensaje { min-height: 1.2rem; color: #b00020; margin: .4rem 0; }
     ul { list-style: none; padding: 0; }
-    li { background: #f4f4f4; margin: 5px 0; padding: 8px; display: flex; justify-content: space-between; align-items: center; }
-    button.delete-btn { background: #ff4d4d; color: white; border: none; padding: 4px 8px; cursor: pointer; border-radius: 4px; }
+    li { display: flex; justify-content: space-between; align-items: center;
+         padding: .5rem; border-bottom: 1px solid #ddd; }
+    li.completada span { text-decoration: line-through; color: #888; }
+    li.alta { border-left: 4px solid #d32f2f; }
+    li.media { border-left: 4px solid #f9a825; }
+    li.baja { border-left: 4px solid #388e3c; }
+    li span { cursor: pointer; flex: 1; }
   </style>
 </head>
 <body>
-  <h1>Registro de Notas de Estudiantes</h1>
+  <h1>Tareas de estudio</h1>
 
-  <form id="formEstudiante">
-    <input type="text" id="nombre" placeholder="Nombre del estudiante">
-    <input type="number" id="nota" placeholder="Nota (0-20)" min="0" max="20" step="0.1">
+  <form id="formulario">
+    <input type="text" id="texto" placeholder="Nueva tarea">
+    <select id="prioridad">
+      <option value="alta">Alta</option>
+      <option value="media" selected>Media</option>
+      <option value="baja">Baja</option>
+    </select>
     <button type="submit">Agregar</button>
   </form>
-  <div id="mensajeError" class="error"></div>
+  <p id="mensaje"></p>
 
-  <h3>Buscar Estudiante:</h3>
-  <input type="text" id="buscador" placeholder="Filtrar por nombre...">
-
-  <h3>Lista de Estudiantes:</h3>
-  <ul id="listaEstudiantes"></ul>
-
-  <h3>Promedio General: <span id="promedioGeneral">0.00</span></h3>
+  <input type="text" id="buscador" placeholder="Buscar tarea...">
+  <ul id="lista"></ul>
+  <p id="contador"></p>
 
   <script src="app.js"></script>
 </body>

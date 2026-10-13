@@ -1,93 +1,89 @@
-class Estudiante {
-  constructor(nombre, nota) {
-    this.nombre = nombre;
-    this.nota = Number(nota);
+// ===== OBJETOS =====
+class Tarea {
+  constructor(texto, prioridad = "media") {
+    this.id = Date.now() + Math.random();
+    this.texto = texto;
+    this.prioridad = prioridad;
+    this.completada = false;
   }
-
-  obtenerEstado() {
-    return this.nota >= 13 ? "Aprobado" : "Desaprobado";
+  alternar() {
+    this.completada = !this.completada;
   }
-
-  obtenerDescripcion() {
-    return `${this.nombre} - Nota: ${this.nota.toFixed(2)} (${this.obtenerEstado()})`;
+  coincide(termino) {
+    return this.texto.toLowerCase().includes(termino.toLowerCase());
   }
 }
 
-class GestorNotas {
+class ListaTareas {
   constructor() {
-    this.estudiantes = [];
+    this.tareas = [];
   }
-
-  agregar(estudiante) {
-    this.estudiantes.push(estudiante);
+  agregar(tarea) {
+    this.tareas.push(tarea);
   }
-
-  eliminar(nombre) {
-    this.estudiantes = this.estudiantes.filter(e => e.nombre !== nombre);
+  eliminar(id) {
+    this.tareas = this.tareas.filter(t => t.id !== id);
   }
-
-  calcularPromedio() {
-    if (this.estudiantes.length === 0) return 0;
-    const suma = this.estudiantes.reduce((acc, est) => acc + est.nota, 0);
-    return suma / this.estudiantes.length;
+  buscar(termino) {
+    return this.tareas.filter(t => t.coincide(termino));
+  }
+  pendientes() {
+    return this.tareas.filter(t => !t.completada).length;
   }
 }
 
-const gestor = new GestorNotas();
+// ===== DOM =====
+const formulario = document.getElementById("formulario");
+const inputTexto = document.getElementById("texto");
+const selectPrioridad = document.getElementById("prioridad");
+const mensaje = document.getElementById("mensaje");
+const buscador = document.getElementById("buscador");
+const ul = document.getElementById("lista");
+const contador = document.getElementById("contador");
 
-const form = document.querySelector("#formEstudiante");
-const inputNombre = document.querySelector("#nombre");
-const inputNota = document.querySelector("#nota");
-const lista = document.querySelector("#listaEstudiantes");
-const promedioEl = document.querySelector("#promedioGeneral");
-const mensajeError = document.querySelector("#mensajeError");
-const buscador = document.querySelector("#buscador");
+const lista = new ListaTareas();
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  mensajeError.textContent = "";
+function mostrar() {
+  ul.innerHTML = "";
+  const visibles = lista.buscar(buscador.value);
+  visibles.forEach(tarea => {
+    const li = document.createElement("li");
+    li.className = tarea.prioridad + (tarea.completada ? " completada" : "");
 
-  const nombre = inputNombre.value.trim();
-  const notaVal = Number(inputNota.value);
+    const span = document.createElement("span");
+    span.textContent = tarea.texto;
+    span.addEventListener("click", () => {          // evento click: marcar
+      tarea.alternar();
+      mostrar();
+    });
 
-  if (!nombre || inputNota.value === "" || isNaN(notaVal) || notaVal < 0 || notaVal > 20) {
-    mensajeError.textContent = "Error: Ingrese un nombre y una nota válida entre 0 y 20.";
+    const botonBorrar = document.createElement("button");
+    botonBorrar.textContent = "Borrar";
+    botonBorrar.addEventListener("click", () => {   // evento click: borrar
+      lista.eliminar(tarea.id);
+      mostrar();
+    });
+
+    li.append(span, botonBorrar);
+    ul.appendChild(li);
+  });
+  contador.textContent = "Pendientes: " + lista.pendientes();
+}
+
+// ===== EVENTOS =====
+formulario.addEventListener("submit", evento => {   // evento submit
+  evento.preventDefault();
+  const texto = inputTexto.value.trim();
+  if (texto.length < 3) {
+    mensaje.textContent = "Escribe al menos 3 caracteres.";
     return;
   }
-
-  const nuevoEstudiante = new Estudiante(nombre, notaVal);
-  gestor.agregar(nuevoEstudiante);
-
-  renderizarLista();
-  form.reset();
+  mensaje.textContent = "";
+  lista.agregar(new Tarea(texto, selectPrioridad.value));
+  inputTexto.value = "";
+  mostrar();
 });
 
-function renderizarLista() {
-  lista.innerHTML = "";
-  const filtro = buscador.value.toLowerCase();
+buscador.addEventListener("input", mostrar);        // evento input
 
-  gestor.estudiantes.forEach(est => {
-    if (est.nombre.toLowerCase().includes(filtro)) {
-      const li = document.createElement("li");
-      li.textContent = est.obtenerDescripcion();
-
-      const btnBorrar = document.createElement("button");
-      btnBorrar.textContent = "Eliminar";
-      btnBorrar.className = "delete-btn";
-
-      btnBorrar.addEventListener("click", () => {
-        gestor.eliminar(est.nombre);
-        renderizarLista();
-      });
-
-      li.appendChild(btnBorrar);
-      lista.appendChild(li);
-    }
-  });
-
-  promedioEl.textContent = gestor.calcularPromedio().toFixed(2);
-}
-
-buscador.addEventListener("input", () => {
-  renderizarLista();
-});
+mostrar();
