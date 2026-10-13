@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Notas - Tarea Lab08</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; max-width: 600px; }
+    .error { color: red; font-weight: bold; margin-top: 5px; }
+    ul { list-style: none; padding: 0; }
+    li { background: #f4f4f4; margin: 5px 0; padding: 8px; display: flex; justify-content: space-between; align-items: center; }
+    button.delete-btn { background: #ff4d4d; color: white; border: none; padding: 4px 8px; cursor: pointer; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Registro de Notas de Estudiantes</h1>
+
+  <form id="formEstudiante">
+    <input type="text" id="nombre" placeholder="Nombre del estudiante">
+    <input type="number" id="nota" placeholder="Nota (0-20)" min="0" max="20" step="0.1">
+    <button type="submit">Agregar</button>
+  </form>
+  <div id="mensajeError" class="error"></div>
+
+  <h3>Buscar Estudiante:</h3>
+  <input type="text" id="buscador" placeholder="Filtrar por nombre...">
+
+  <h3>Lista de Estudiantes:</h3>
+  <ul id="listaEstudiantes"></ul>
+
+  <h3>Promedio General: <span id="promedioGeneral">0.00</span></h3>
+
+  <script src="app.js"></script>
+</body>
+</html>
