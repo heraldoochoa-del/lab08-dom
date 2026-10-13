@@ -156,13 +156,13 @@ buscador.addEventListener("input", mostrar);
 
 | N.° | Acción | Resultado esperado | Resultado obtenido | ¿Cumple? |
 |---|---|---|---|---|
-| 1 | Escribir "Estudiar JS" con prioridad alta y pulsar Agregar | Aparece la tarea con borde rojo y el contador sube en 1 | (completar tras probar) | |
-| 2 | Pulsar Agregar con el campo vacío | Mensaje rojo "Escribe al menos 3 caracteres." y no se agrega nada | (completar tras probar) | |
-| 3 | Hacer clic sobre el texto de una tarea | La tarea se tacha y el contador de pendientes baja en 1 | (completar tras probar) | |
-| 4 | Hacer clic otra vez sobre la tarea tachada | Se quita el tachado y el contador vuelve a subir | (completar tras probar) | |
-| 5 | Pulsar Borrar en una tarea | La tarea desaparece de la lista | (completar tras probar) | |
-| 6 | Escribir "js" en el buscador | Solo se ven las tareas que contienen "js" | (completar tras probar) | |
-| 7 | Revisar la consola del navegador (F12) en GitHub Pages | No hay errores | (completar tras probar) | |
+| 1 | Escribir "Estudiar JS" con prioridad alta y pulsar Agregar | Aparece la tarea con borde rojo y el contador sube en 1 | Se agrega la tarea con indicador rojo de prioridad alta y el contador marca Pendientes: 1 | Sí |
+| 2 | Pulsar Agregar con el campo vacío | Mensaje rojo "Escribe al menos 3 caracteres." y no se agrega nada | Muestra el mensaje en rojo "Escribe al menos 3 caracteres." y la lista no cambia | Sí |
+| 3 | Hacer clic sobre el texto de una tarea | La tarea se tacha y el contador de pendientes baja en 1 | El texto de la tarea aparece tachado y el contador disminuye a 0 | Sí |
+| 4 | Hacer clic otra vez sobre la tarea tachada | Se quita el tachado y el contador vuelve a subir | Se remueve el estilo tachado y el contador vuelve a subir a 1 | Sí |
+| 5 | Pulsar Borrar en una tarea | La tarea desaparece de la lista | La tarea es removida del DOM y la lista se actualiza correctamente | Sí |
+| 6 | Escribir "js" en el buscador | Solo se ven las tareas que contienen "js" | Filtra dinámicamente mostrando solo las tareas coincidentes | Sí |
+| 7 | Revisar la consola del navegador (F12) en GitHub Pages | No hay errores | La consola se mantiene limpia sin excepciones ni advertencias | Sí |
 
 ## Por qué diseñé así mi clase
 
